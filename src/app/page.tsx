@@ -18,9 +18,7 @@ export default function Home() {
         <section>
           <div className="flex flex-col px-4">
             <FolderGit2 className="mb-4" />
-            <h2 className="mb-4 text-lg font-bold text-neutral-800">
-              Projects
-            </h2>
+            <h2 className="mb-4 text-lg font-bold">Projects</h2>
           </div>
           <div className="flex flex-col gap-4">
             <Project
@@ -42,7 +40,7 @@ async function BlogsSection() {
     <section>
       <div className="flex flex-col px-4">
         <MessageSquare className="mb-4" />
-        <h2 className="mb-4 text-lg font-bold text-neutral-800">Blogs</h2>
+        <h2 className="mb-4 text-lg font-bold">Blogs</h2>
       </div>
 
       <div className="flex flex-col gap-2">
@@ -63,8 +61,8 @@ function Project({
 }) {
   return (
     <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
-      <h3 className="text-netural-700 mb-2 font-bold">{title}</h3>
-      <p className="text-neutral-600">{description}</p>
+      <h3 className="mb-2 font-bold">{title}</h3>
+      <p className="text-neutral-600 dark:text-neutral-300">{description}</p>
     </div>
   );
 }
@@ -73,7 +71,7 @@ function BlogPost({ slug }: { slug: string }) {
   return (
     <Link href={`/blogs/${slug}`}>
       <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
-        <h3 className="text-netural-700 font-bold">{slug}</h3>
+        <h3 className="font-bold">{slug}</h3>
       </div>
     </Link>
   );
