@@ -45,7 +45,7 @@ async function BlogsSection() {
         <h2 className="mb-4 text-lg font-bold text-neutral-800">Blogs</h2>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         {blogs.map((blog) => (
           <BlogPost key={blog} slug={blog} />
         ))}

@@ -1,5 +1,4 @@
 import fs from "fs/promises";
-import { cache } from "react";
 
 export const getBlogNames = async () => {
   const contents = await fs.readdir("src/app/blogs", { withFileTypes: true });
@@ -11,8 +10,8 @@ export const getBlogNames = async () => {
   return directories;
 };
 
-export const getBlogs = cache(async () => {
+export const getBlogs = async () => {
   const blogNames = await getBlogNames();
   // TODO: add metadata to MDX files and get date
   return blogNames;
-});
+};
