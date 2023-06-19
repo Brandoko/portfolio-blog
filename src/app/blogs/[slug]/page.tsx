@@ -32,7 +32,6 @@ export default async function Blog({ params }: { params: { slug: string } }) {
   const blogs = await getBlogs();
   const currentBlog = blogs.find((blog) => blog.slug === params.slug);
   if (!currentBlog) return null;
-  console.log("blog render");
 
   return (
     <>

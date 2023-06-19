@@ -1,6 +1,7 @@
 import classNames from "classnames";
-import "./globals.css";
 import { Inter } from "next/font/google";
+import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,14 +16,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={classNames(
           inter.className,
           "bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100"
         )}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
