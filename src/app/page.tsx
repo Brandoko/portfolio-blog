@@ -1,4 +1,4 @@
-import { getBlogs } from "@/services/blogsService";
+import { getBlogs } from "@/lib/get-blogs";
 import { FolderGit2, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
@@ -45,7 +45,12 @@ async function BlogsSection() {
 
       <div className="flex flex-col gap-2">
         {blogs.map((blog) => (
-          <BlogPost key={blog} slug={blog} />
+          <BlogPost
+            key={blog.slug}
+            slug={blog.slug}
+            title={blog.title}
+            date={blog.date}
+          />
         ))}
       </div>
     </section>
@@ -67,11 +72,20 @@ function Project({
   );
 }
 
-function BlogPost({ slug }: { slug: string }) {
+function BlogPost({
+  slug,
+  title,
+  date,
+}: {
+  slug: string;
+  title: string;
+  date: string;
+}) {
   return (
     <Link href={`/blogs/${slug}`}>
       <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
-        <h3 className="font-bold">{slug}</h3>
+        <h3 className="font-bold">{title}</h3>
+        <p className="text-neutral-600 dark:text-neutral-400">{date}</p>
       </div>
     </Link>
   );
