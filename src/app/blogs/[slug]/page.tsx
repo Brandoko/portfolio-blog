@@ -1,5 +1,5 @@
 import { getBlogs } from "@/lib/get-blogs";
-import BlogPost from "./blog-post";
+import BlogContent from "./blog-content";
 
 const dynamicParams = false;
 export { dynamicParams };
@@ -17,5 +17,5 @@ export default async function Blog({ params }: { params: { slug: string } }) {
   const currentBlog = blogs.find((blog) => blog.slug === params.slug);
   if (!currentBlog) return null;
 
-  return <BlogPost>{currentBlog.content}</BlogPost>;
+  return <BlogContent>{currentBlog.content}</BlogContent>;
 }
