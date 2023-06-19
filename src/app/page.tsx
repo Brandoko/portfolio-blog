@@ -33,6 +33,21 @@ export default function Home() {
   );
 }
 
+function Project({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
+      <h3 className="mb-2 font-bold">{title}</h3>
+      <p className="text-neutral-600 dark:text-neutral-300">{description}</p>
+    </div>
+  );
+}
+
 async function BlogsSection() {
   const blogs = await getBlogs();
 
@@ -54,21 +69,6 @@ async function BlogsSection() {
         ))}
       </div>
     </section>
-  );
-}
-
-function Project({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
-      <h3 className="mb-2 font-bold">{title}</h3>
-      <p className="text-neutral-600 dark:text-neutral-300">{description}</p>
-    </div>
   );
 }
 
