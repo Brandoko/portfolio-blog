@@ -1,57 +1,37 @@
 ---
 title: Deploy a Blog for Free in 10 Minutes with Next.js App Router
-date: Jun 18, 2023
+date: Jun 23, 2023
 ---
 
 ## What we’re building
 
-This quick tutorial will walkthrough how you can create and deploy a blog website from start to finish. If you’re a beginner that’s ok, each step will describe what’s going on. This tutorial assumes you have some light exposure to React and Markdown format TODO link to markdown cheetsheet, but requires no prior Next.js experience. The blog will be created using Next.js. Adding new blog posts to your site can be done easily by adding a markdown file to a folder. For a free, fast, and scalable deployment we’ll be using Vercel.
-
-The markdown will be written in MDX. MDX is a variant of markdown that allows you to write JSX code right inside of your markdown. You can even import custom React components into markdown to support things like interactable widgets in your blog.
-
-At the end of the post I’ll go over some cool optional add ons like adding syntax highlighting for code blocks, seo optimizations and more.
+This quick tutorial will walk you through how to create and deploy a blog website from start to finish. This tutorial assumes you have some light exposure to React and Markdown format, but requires no prior Next.js experience. The blog will be created using Next.js, and deployed through Vercel for a free, fast, and scalable solution. We'll be using MDX to write the blog posts. MDX is a markdown variant that allows you to write JSX code inside your markdown. You can even import custom React components into markdown to support things like interactive widgets in your blog.
 
 ## Getting Node if you don’t have it
 
-On the backend Next.js runs on Node.js. The [Next.js docs](https://nextjs.org/docs/getting-started/installation) state that you need Node 16.8 or later. You can install the latest version of Node.js [from the official Node site](https://nodejs.org/en). I recommend that you download the latest LTS release for the best stability.
+Next.js runs on Node.js. You need Node 16.8 or later as per the [Next.js docs](https://nextjs.org/docs/getting-started/installation). Install the latest version of Node.js [from the official Node site](https://nodejs.org/en). It is recommended to download the latest LTS release for stability.
 
 ## Creating the Next.js app
 
-Let’s create the Next.js app. We can use the following command to start us off.
+Use the following command to create the Next.js app: `npx create-next-app@latest`
 
-```
-npx create-next-app@latest
-```
-
-`npx` is a command that can install and run an npm package in one go. The create-next-app script gets you started with all the files and dependencies you need to run a barebones Next.js app.
-
-The create-next-app utility will ask a series of questions. Here are my recommended choices:
-
-What is your project named? nextjs-mdx-blog-starter
-This will be the name of your project folder.
-Would you like to use TypeScript with this project? Yes
-Strongly recommend Typescript for its type safety and code completion features.
-Would you like to use ESLint with this project? Yes
-ESLint scans your code and identifies bad practices and problematic code. Selecting Yes starts you off with a minimal ESLint config with recommended lint rules from the Next.js team.
-Would you like to use Tailwind CSS with this project? Yes
-We will be using the Tailwind prose plugin to style our entire blog post with one css class.
-Would you like to use `src/` directory with this project? Yes
-Puts all your application code inside a src folder. Keeps your repo much cleaner.
-Use App Router (recommended)? Yes
-This is the new way of writing Next.js and React code.
-Would you like to customize the default import alias? No
-The default alias of ‘@’ is fine. The lets you define your imports relative to your src folder so if your in a deeply nested file you can do this `import { myModule } from @/lib/utils` instead of something like this `import { myModule } from ../../../lib/utils`
+- What is your project named? nextjs-mdx-blog-starter
+- Would you like to use TypeScript with this project? Yes
+- Would you like to use ESLint with this project? Yes
+- Would you like to use Tailwind CSS with this project? Yes
+  - We will be using the Tailwind prose plugin to style our entire blog post with one css class.
+- Would you like to use `src/` directory with this project? Yes
+- Use App Router (recommended)? Yes
+- Would you like to customize the default import alias? No
 
 After this short setup you can start your website locally
 
-Go into your newly created project `cd <your project name>`
-Run `npm run dev` and see your site update automatically as you make changes at http://localhost:3000
+- Go into your newly created project `cd <your project name>`
+- Run `npm run dev` and see your site update automatically as you make changes at http://localhost:3000
 
-## Some quick cleanup
+## Quick cleanup
 
-Lets clear out the pre-made body styles that they put in src/app/globals.css.
-
-Your globals.css file should just have this:
+Clear out the pre-made body styles in `src/app/globals.css`. Your `globals.css` file should contain the only the following:
 
 ```css
 @tailwind base;
@@ -61,19 +41,9 @@ Your globals.css file should just have this:
 
 ## Creating a Page for rendering your blogs
 
-Let’s get right into it by creating a page on your website that renders the blog posts. We’ll serve it at /blogs/[slug] where [slug] will be the name of a particular blog, ex. /blogs/blog-tutorial.
-
-Create a file called page.tsx inside src/app/blogs/[slug]. This creates a dynamic route so that any direct subroute of /blog will use this page component (example: /blog/my-first-blog and /blog/my-second-blog will both hit /src/app/blogs/[slug]/page.tsx).
-
-### About Next.js routing
-
-All pages go inside your src/app/ folder and must have the name `page.tsx` for Next.js to recognize it as a page. Next.js uses file based routing, so if you put a page.tsx file in src/app/hello/world, then that page will be available at localhost:3000/hello/world.
-
-Let’s create a simple React component in our new page.tsx
+Let’s create a simple React component in `src/app/blogs/[slug]/page.tsx`:
 
 ```typescript
-// src/app/blogs/[slug]/page.tsx
-
 export default async function Blog({ params }: { params: { slug: string } }) {
   return (
     <>
@@ -85,13 +55,15 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 }
 ```
 
-This component reads the slug from the path you are on, if you go to /blogs/hello, then params.slug will equal “hello”.
+Visit localhost:3000/blogs/hello to see the results.
 
-Try it! go to localhost:3000/blogs/hello and the heading should say hello.
+### About Next.js routing
+
+All pages go inside your src/app/ folder and must have the name `page.tsx` for Next.js to recognize it as a page. Next.js uses file based routing, so if you put a page.tsx file in src/app/hello/world, then that page will be available at localhost:3000/hello/world.
 
 ## Create a layout for our blog page
 
-Our layout will render some html tags like main, nav, and article, to structure our blog post page. It confines the width and centers the content in the middle.
+Our layout will render some HTML tags like main, nav, and article to structure our blog post page.
 
 Our layout will also have a secret weapon, tailwind’s prose class. Tailwind’s prose will format semantic html tags like h1, h2, p, etc. into a clean layout that will make your blog look clean and professional.
 
@@ -101,32 +73,22 @@ Install the prose plugin
 npm i @tailwindcss/typography
 ```
 
-Add the plugin to the list of plugins in your tailwind.config.js. It should look like this afterwards:
+Add the plugin to the list of plugins in the `tailwind.config.js`. It should look like this afterwards:
 
 ```javascript
-// tailwind.config.js
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
   theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-    },
+    // ...
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    // ...
+  ],
 };
 ```
 
-Now let’s create the layout. The main tag will limit the max width and center itself in the middle of the screen. A navbar will have a link back to the home page, and the article tag will render the blog post and add the tailwind prose class.
+Now create a `layout.tsx` file in `src/app/blogs/[slug]`.
 
 ```typescript
 // src/app/blogs/[slug]/layout.tsx
@@ -146,13 +108,15 @@ export default function BlogLayout({ children }: { children: ReactNode }) {
 }
 ```
 
-After saving your changes to the tailwind config, you should now see a beautifully and minimally formatted version of your blog page
+Your mini blog post should be looking better now.
 
-TODO: add picture
+## Adding blog posts
 
-#### About Next.js layouts
+Create a `first-blog.mdx` inside the `src/blogs` folder.
 
-Layout.tsx is another special file in Next.js like page.tsx. A layout component wraps the content of all pages below it. So by putting a layout.tsx in src/app/blogs/[slug] all pages in this folder will be wrapped in this layout. Layout can be nested too, notice that we already have a root layout at src/app/layout. This layout wraps the whole app. A layout.tsx component takes a `children` prop which will be whichever page is rendered at runtime.
+Install the `gray-matter` package to parse the frontmatter values from the MDX files.
+
+Create a `get-blogs.ts` file in a utils folder that will contain a function reading all the blogs.
 
 ## Adding blog posts
 
@@ -177,7 +141,7 @@ Make a Blog
 party!
 ```
 
-Remember, MDX is just markdown with the ability to import JSX. We don’t have any JSX yet. The section at the top with the title and date is frontmatter metadata. This is a set of key/value pairs that let you define metadata about your markdown file. We will use the title and date when we display a list of all your blog posts.
+MDX is just markdown with the ability to import JSX. We don’t have any JSX yet. The section at the top with the title and date is frontmatter metadata. This is a set of key/value pairs that let you define metadata about your markdown file. We will use the title and date when we display a list of all your blog posts.
 
 Next we’re going to create a utility function that scans the blogs folder for all mdx files and parses their content and frontmatter data.
 
@@ -258,9 +222,7 @@ Since we’re rendering this in a React server component we are importing the rs
 
 If you see VSCode complaining about `'MDXRemote' cannot be used as a JSX component.`, that means VSCode is not using the version of typescript in your next project. Press F1 and type `Typescript: Select TypeScript Version…`. Click into that and then choose the Workspace version of typescript.
 
-Time to see the result of our work! Go to localhost:3000/blogs/first-blog and you should see your first-blog.mdx file rendered:
-
-TODO: add screenshot
+Time to see the result of our work! Go to localhost:3000/blogs/first-blog and you should see your first-blog.mdx.
 
 If you visit another route like /blogs/test you will get a blank page since there are no mdx files named test.mdx in our blogs folder. We will address this next.
 
@@ -285,6 +247,16 @@ export async function generateStaticParams() {
 ```
 
 It returns a list of objects with a `slug` property. Each of these objects are passed to your `Blog` component at build time so that Next.js can render an instance of Page for each slug. This won’t change anything in dev mode. When you run npm run dev to start your dev server Next.js won’t statically build any pages.
+
+Finally add this following export to `src/app/blogs/[slug]/page.tsx` to tell Next that any page that was not statically built should return a 404 instead of trying to dynamically render:
+
+```typescript
+const dynamicParams = false;
+export { dynamicParams };
+```
+
+### Seeing the difference static generation makes
+
 If you curious to see static rendering in action and the renders it saves, add a console log inside your `Blog` component `` console.log(`Blog ${params.slug} is rendering`); ``
 
 Now comment out your `generateStaticParams` function so that it won't run.
@@ -374,18 +346,8 @@ Looking better! Try redesigning the page to put your own spin on it.
 
 ## Deploying
 
-Ready to show the world your new blog? You can easily deploy Next.js apps on Vercel’s platform with a few clicks.
+1. Push your blog repo to your GitHub account.
+2. Sign up on the [Vercel dashboard](https://vercel.com/dashboard) and import your blog repo.
+3. Click "Deploy" and check your blog on the provided domain.
 
-First push your blog repo to your GitHub account.
-
-Go to the Vercel dashboard and sign up if you don’t have an account. Logging in with your GitHub is the easiest route since you can deploy your app from GitHub. https://vercel.com/dashboard
-
-In the "Import Git Repository" section click "Import" on your blog repo that you pushed to GitHub.
-
-Vercel will automatically detect that this is a Next.js project so all you have to do is click "Deploy".
-
-Vercel will go through the steps of building and deploying. With just a few clicks on Vercel we have a CI/CD pipeline that listens for changes on our GitHub main branch and automatically builds and deploys our app to Vercel, which is using a CDN and serverless functions to server our app around the world.
-
-This process only takes a couple minutes, but sometimes the deplyment steps on Vercel's website hangs, just go back to the dashbaord and you should see your app. Clicking it will show you the Domain it is hosted on. You can use the \*.vercel.app domain for your sites for free.
-
-That's it! When you want to make a new post all you have to do is add another .mdx file to your blogs folder, commit the change to `main`, and push to GitHub.
+You now have a fully functioning blog app. When you want to add a new post, simply add another .mdx file to your blogs folder, commit the change to `main`, and push to GitHub.
