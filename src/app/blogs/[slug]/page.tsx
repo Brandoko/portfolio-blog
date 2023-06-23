@@ -37,6 +37,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
     <>
       <p>{currentBlog.date}</p>
       <h1>{currentBlog.title}</h1>
+      <div className="h-1 w-12 bg-blue-400" />
       <BlogMDX source={currentBlog.content} />
     </>
   );

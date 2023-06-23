@@ -3,6 +3,389 @@ title: Deploy a Blog for Free in 10 Minutes with Next.js App Router
 date: Jun 18, 2023
 ---
 
+## What we’re building
+
+This quick tutorial will walkthrough how you can create and deploy a blog website from start to finish. If you’re a beginner that’s ok, each step will describe what’s going on. This tutorial assumes you have some light exposure to React and Markdown format TODO link to markdown cheetsheet, but requires no prior Next.js experience. The blog will be created using Next.js. Adding new blog posts to your site can be done easily by adding a markdown file to a folder. For a free, fast, and scalable deployment we’ll be using Vercel.
+
+The markdown will be written in MDX. MDX is a variant of markdown that allows you to write JSX code right inside of your markdown. You can even import custom React components into markdown to support things like interactable widgets in your blog.
+
+At the end of the post I’ll go over some cool optional add ons like adding syntax highlighting for code blocks, seo optimizations and more.
+
+## Getting Node if you don’t have it
+
+On the backend Next.js runs on Node.js. The [Next.js docs](https://nextjs.org/docs/getting-started/installation) state that you need Node 16.8 or later. You can install the latest version of Node.js [from the official Node site](https://nodejs.org/en). I recommend that you download the latest LTS release for the best stability.
+
+## Creating the Next.js app
+
+Let’s create the Next.js app. We can use the following command to start us off.
+
+```
+npx create-next-app@latest
+```
+
+`npx` is a command that can install and run an npm package in one go. The create-next-app script gets you started with all the files and dependencies you need to run a barebones Next.js app.
+
+The create-next-app utility will ask a series of questions. Here are my recommended choices:
+
+What is your project named? nextjs-mdx-blog-starter
+This will be the name of your project folder.
+Would you like to use TypeScript with this project? Yes
+Strongly recommend Typescript for its type safety and code completion features.
+Would you like to use ESLint with this project? Yes
+ESLint scans your code and identifies bad practices and problematic code. Selecting Yes starts you off with a minimal ESLint config with recommended lint rules from the Next.js team.
+Would you like to use Tailwind CSS with this project? Yes
+We will be using the Tailwind prose plugin to style our entire blog post with one css class.
+Would you like to use `src/` directory with this project? Yes
+Puts all your application code inside a src folder. Keeps your repo much cleaner.
+Use App Router (recommended)? Yes
+This is the new way of writing Next.js and React code.
+Would you like to customize the default import alias? No
+The default alias of ‘@’ is fine. The lets you define your imports relative to your src folder so if your in a deeply nested file you can do this `import { myModule } from @/lib/utils` instead of something like this `import { myModule } from ../../../lib/utils`
+
+After this short setup you can start your website locally
+
+Go into your newly created project `cd <your project name>`
+Run `npm run dev` and see your site update automatically as you make changes at http://localhost:3000
+
+## Some quick cleanup
+
+Lets clear out the pre-made body styles that they put in src/app/globals.css.
+
+Your globals.css file should just have this:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## Creating a Page for rendering your blogs
+
+Let’s get right into it by creating a page on your website that renders the blog posts. We’ll serve it at /blogs/[slug] where [slug] will be the name of a particular blog, ex. /blogs/blog-tutorial.
+
+Create a file called page.tsx inside src/app/blogs/[slug]. This creates a dynamic route so that any direct subroute of /blog will use this page component (example: /blog/my-first-blog and /blog/my-second-blog will both hit /src/app/blogs/[slug]/page.tsx).
+
+### About Next.js routing
+
+All pages go inside your src/app/ folder and must have the name `page.tsx` for Next.js to recognize it as a page. Next.js uses file based routing, so if you put a page.tsx file in src/app/hello/world, then that page will be available at localhost:3000/hello/world.
+
+Let’s create a simple React component in our new page.tsx
+
+```typescript
+// src/app/blogs/[slug]/page.tsx
+
+export default async function Blog({ params }: { params: { slug: string } }) {
+  return (
+    <>
+      <h1>{params.slug}</h1>
+      <h2>my first section</h2>
+      <p>some content</p>
+    </>
+  );
+}
+```
+
+This component reads the slug from the path you are on, if you go to /blogs/hello, then params.slug will equal “hello”.
+
+Try it! go to localhost:3000/blogs/hello and the heading should say hello.
+
+## Create a layout for our blog page
+
+Our layout will render some html tags like main, nav, and article, to structure our blog post page. It confines the width and centers the content in the middle.
+
+Our layout will also have a secret weapon, tailwind’s prose class. Tailwind’s prose will format semantic html tags like h1, h2, p, etc. into a clean layout that will make your blog look clean and professional.
+
+Install the prose plugin
+
+```
+npm i @tailwindcss/typography
+```
+
+Add the plugin to the list of plugins in your tailwind.config.js. It should look like this afterwards:
+
+```javascript
+// tailwind.config.js
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+    },
+  },
+  plugins: [require("@tailwindcss/typography")],
+};
+```
+
+Now let’s create the layout. The main tag will limit the max width and center itself in the middle of the screen. A navbar will have a link back to the home page, and the article tag will render the blog post and add the tailwind prose class.
+
+```typescript
+// src/app/blogs/[slug]/layout.tsx
+
+import Link from "next/link";
+import { ReactNode } from "react";
+
+export default function BlogLayout({ children }: { children: ReactNode }) {
+  return (
+    <main className="mx-auto min-h-screen max-w-3xl">
+      <nav className="flex space-x-6 py-10">
+        <Link href={"/"}>Home</Link>
+      </nav>
+      <article className="prose max-w-none">{children}</article>
+    </main>
+  );
+}
+```
+
+After saving your changes to the tailwind config, you should now see a beautifully and minimally formatted version of your blog page
+
+TODO: add picture
+
+#### About Next.js layouts
+
+Layout.tsx is another special file in Next.js like page.tsx. A layout component wraps the content of all pages below it. So by putting a layout.tsx in src/app/blogs/[slug] all pages in this folder will be wrapped in this layout. Layout can be nested too, notice that we already have a root layout at src/app/layout. This layout wraps the whole app. A layout.tsx component takes a `children` prop which will be whichever page is rendered at runtime.
+
+## Adding blog posts
+
+It’s time to start creating some blogs.
+
+Create a blogs folder in src/ and create a first-blog.mdx file inside.
+
+src/blogs/first-blog.mdx:
+
+```mdx
+---
+title: My First Blog
+date: Jun 18, 2023
+---
+
 ## Step 1
 
-Launch a Scalable Blog in 10 Minutes with Next.js App Router Launch a Scalable Blog in 10 Minutes with Next.js App Router Launch a Scalable Blog in 10 Minutes with Next.js App Router
+Make a Blog
+
+## Step 2
+
+party!
+```
+
+Remember, MDX is just markdown with the ability to import JSX. We don’t have any JSX yet. The section at the top with the title and date is frontmatter metadata. This is a set of key/value pairs that let you define metadata about your markdown file. We will use the title and date when we display a list of all your blog posts.
+
+Next we’re going to create a utility function that scans the blogs folder for all mdx files and parses their content and frontmatter data.
+
+In order to parse the frontmatter values from the mdx files, we need to install the `gray-matter` package.
+
+```
+npm i gray-matter
+```
+
+Then we can create a `get-blogs.ts` file in a utils folder that will contain a function that reads all the blogs.
+
+src/utils/get-blogs.ts:
+
+```typescript
+import fs from "fs/promises";
+import path from "path";
+import matter from "gray-matter";
+
+export const getBlogs = async () => {
+  const blogsDir = "src/blogs";
+  const files = await fs.readdir(blogsDir);
+
+  return Promise.all(
+    files
+      .filter((fileName) => path.extname(fileName) === ".mdx")
+      .map(async (blogFileName) => {
+        const blogSlug = path.basename(blogFileName, ".mdx");
+        const filePath = path.join(blogsDir, blogFileName);
+        const blogMdx = await fs.readFile(filePath, "utf8");
+        const fontmatter = matter(blogMdx);
+
+        return {
+          title: fontmatter.data.title,
+          date: fontmatter.data.date,
+          content: fontmatter.content,
+          slug: blogSlug,
+        };
+      })
+  );
+};
+```
+
+The `getBlogs` function is using the async/await versions of the fs file system utilities. It creates and awaits an array of promises, one for each mdx file. Each promise resolves with the parsed data from the MDX file. We are using gray-matter to read the title, date, and content (content is everything below the frontmatter data). Finally we set slug as the name of the file. So if your file is called first-blog.mdx then the slug will be first-blog. We will use this slug to determine the url it is served at.
+
+`getBlogs` will be used to show a list of all blogs on our site, and also to get the content of any particular blog.
+
+We’re almost there, in order to render the MDX content we will use the `MDXRemote` component from `next-mdx-remote`. As the name suggests this will also open the door to rendering your MDX files from a remote repository, like a github profile or cloud storage bucket.
+
+```
+npm i next-mdx-remote
+```
+
+Now let’s import `getBlogs` and `MDXRemote` and use the slug of our page to find the right blog from the list of blogs. Let’s also render the blog title in an h1 tag.
+
+src/app/blogs/[slug]/page.tsx:
+
+```typescript
+import { getBlogs } from "@/utils/get-blogs";
+import { MDXRemote } from "next-mdx-remote/rsc";
+
+export default async function Blog({ params }: { params: { slug: string } }) {
+  const blogs = await getBlogs();
+  const currentBlog = blogs.find((blog) => blog.slug === params.slug);
+  if (!currentBlog) return null;
+
+  return (
+    <>
+      <h1>{currentBlog.title}</h1>
+      <MDXRemote source={currentBlog.content} />
+    </>
+  );
+}
+```
+
+Since we’re rendering this in a React server component we are importing the rsc version of `MDXRemote` from `"next-mdx-remote/rsc"`
+
+#### VSCode typescript quirk
+
+If you see VSCode complaining about `'MDXRemote' cannot be used as a JSX component.`, that means VSCode is not using the version of typescript in your next project. Press F1 and type `Typescript: Select TypeScript Version…`. Click into that and then choose the Workspace version of typescript.
+
+Time to see the result of our work! Go to localhost:3000/blogs/first-blog and you should see your first-blog.mdx file rendered:
+
+TODO: add screenshot
+
+If you visit another route like /blogs/test you will get a blank page since there are no mdx files named test.mdx in our blogs folder. We will address this next.
+
+## Making our blog posts statically generated
+
+Our blog site is working at a basic level, but we can make it faster! Right now everytime you visit your blog page or refresh the page, Next.js is rendering your page on the server and sending it to the browser. It’s rendering on the server because it is a React server component which is a good start, but since this blog page only changes when we edit the MDX file, let’s render it once at build time leading to even snappier pages loads when we run the app.
+
+Next.js has built in support to make this easy. If you export an async function from your page.tsx called `generateStaticParams`, then the return value of that function will tell Next.js all the pages to render statically at build time.
+
+We will use our handy `getBlogs` helper again to tell Next about all of our blogs to render.
+
+Add this export in your src/blogs/[slug]/page.tsx:
+
+```typescript
+export async function generateStaticParams() {
+  const blogs = await getBlogs();
+
+  return blogs.map((blog) => ({
+    slug: blog.slug,
+  }));
+}
+```
+
+It returns a list of objects with a `slug` property. Each of these objects are passed to your `Blog` component at build time so that Next.js can render an instance of Page for each slug. This won’t change anything in dev mode. When you run npm run dev to start your dev server Next.js won’t statically build any pages.
+If you curious to see static rendering in action and the renders it saves, add a console log inside your `Blog` component `` console.log(`Blog ${params.slug} is rendering`); ``
+
+Now comment out your `generateStaticParams` function so that it won't run.
+
+Run `npm run build` followed by `npm run start` to create and run a production ready build.
+
+Finally visit your blog at localhost:3000/blog/first-blog and refresh the page a few times. Notice that in your terminal where you ran `npm run start` you’ll see “Blog first-blog is rendering” every time you refresh the page.
+
+Now uncomment `generateStaticParams` and save your file. Stop the server and run `npm run build` followed by `npm run start` again. Perform the same refresh test and notice that there are no console logs when you refresh! Your server doesn’t need to render the page on each visit since it was cached at build time.
+
+## Making a homepage to list all of your blogs
+
+To wrap this simple blog site up, let’s make a homepage that renders every blog on the site with a link to it. This will be easy since we already have `getBlogs` to give us the metadata for every post.
+
+Open the src/app/page.tsx file that was created for you at the start. This is the page that’s served at the root of the site “/”. Clear out the file and make a component that just renders an empty main tag
+
+src/app/page.tsx:
+
+```typescript
+export default function Home() {
+  return <main></main>;
+}
+```
+
+Now import the `getBlogs` function so that we can call it inside the component and render a Link for every blog post inside the main tag. We have to make the component async so that we can await the `getBlogs` response. Only server components can be async functions.
+
+```typescript
+import { getBlogs } from "@/utils/get-blogs";
+import Link from "next/link";
+
+export default async function Home() {
+  const blogs = await getBlogs();
+
+  return (
+    <main>
+      {blogs.map((blog) => (
+        <Link key={blog.slug} href={`/blogs/${blog.slug}`}>
+          {blog.title}
+        </Link>
+      ))}
+    </main>
+  );
+}
+```
+
+We are rendering Next.js' `Link`component for each blog post. The href is set to `/blogs/{blog slug name}`.
+
+You can now click the Home button above your blog post to go home and see all your blogs. Clicking your blog title will bring you back to your blog. The home page isn’t pretty looking, but we have a fully functioning blog app now!
+
+Let’s add another blog to the blogs folder and style up the home page a bit:
+
+src/app/page.tsx:
+
+```typescript
+import { getBlogs } from "@/utils/get-blogs";
+import Link from "next/link";
+
+export default async function Home() {
+  const blogs = await getBlogs();
+
+  return (
+    <main className="mx-auto mt-10 min-h-screen max-w-xl">
+      <h1 className="mb-10 text-5xl font-bold text-neutral-800">
+        Brandon&apos;s Blog
+      </h1>
+      <ul className="space-y-4">
+        {blogs.map((blog) => (
+          <li key={blog.slug}>
+            <Link
+              href={`/blogs/${blog.slug}`}
+              className="group flex flex-col rounded-lg border border-neutral-200 bg-neutral-50 p-4 hover:shadow-lg hover:shadow-neutral-100"
+            >
+              <h2 className="font-bold text-neutral-900 group-hover:underline">
+                {blog.title}
+              </h2>
+              <p className="text-sm text-neutral-600">{blog.date}</p>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+```
+
+Looking better! Try redesigning the page to put your own spin on it.
+
+## Deploying
+
+Ready to show the world your new blog? You can easily deploy Next.js apps on Vercel’s platform with a few clicks.
+
+First push your blog repo to your GitHub account.
+
+Go to the Vercel dashboard and sign up if you don’t have an account. Logging in with your GitHub is the easiest route since you can deploy your app from GitHub. https://vercel.com/dashboard
+
+In the "Import Git Repository" section click "Import" on your blog repo that you pushed to GitHub.
+
+Vercel will automatically detect that this is a Next.js project so all you have to do is click "Deploy".
+
+Vercel will go through the steps of building and deploying. With just a few clicks on Vercel we have a CI/CD pipeline that listens for changes on our GitHub main branch and automatically builds and deploys our app to Vercel, which is using a CDN and serverless functions to server our app around the world.
+
+This process only takes a couple minutes, but sometimes the deplyment steps on Vercel's website hangs, just go back to the dashbaord and you should see your app. Clicking it will show you the Domain it is hosted on. You can use the \*.vercel.app domain for your sites for free.
+
+That's it! When you want to make a new post all you have to do is add another .mdx file to your blogs folder, commit the change to `main`, and push to GitHub.
