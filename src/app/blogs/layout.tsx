@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 export default function BlogLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="mx-auto my-12 max-w-3xl">
+    <main className="mx-auto my-12 max-w-3xl px-2">
       <nav className="mb-10 flex space-x-6">
         <Button variant="link" asChild className="pl-0">
           <Link href={"/"}>
@@ -13,7 +13,7 @@ export default function BlogLayout({ children }: { children: ReactNode }) {
           </Link>
         </Button>
       </nav>
-      <article className="prose prose-neutral mb-12 max-w-none dark:prose-invert">
+      <article className="prose prose-slate mb-12 max-w-none dark:prose-invert">
         {children}
       </article>
       <BlogFooter />

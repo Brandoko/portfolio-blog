@@ -43,9 +43,11 @@ export default async function Blog({ params }: { params: { slug: string } }) {
   return (
     <>
       <p>{currentBlog.date}</p>
-      <h1 className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text py-1 text-4xl font-black text-transparent dark:from-cyan-400 dark:to-blue-500 sm:text-5xl">
-        {currentBlog.title}
-      </h1>
+      <div className="not-prose">
+        <h1 className="mb-8 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text py-1 text-3xl font-black text-transparent dark:from-cyan-400 dark:to-blue-500 sm:text-4xl md:text-5xl">
+          {currentBlog.title}
+        </h1>
+      </div>
       <div className="h-1 w-12 bg-blue-500 dark:bg-cyan-400" />
       <BlogMDX source={currentBlog.content} />
     </>
