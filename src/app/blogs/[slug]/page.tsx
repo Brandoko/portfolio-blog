@@ -54,6 +54,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
 const prettyCodeOptions: Partial<Options> = {
   theme: "one-dark-pro",
+  keepBackground: true,
 };
 
 function BlogMDX({ source }: { source: string }) {
