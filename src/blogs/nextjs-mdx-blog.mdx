@@ -31,7 +31,7 @@ After this short setup you can start your website locally
 
 ## Quick cleanup
 
-Clear out the pre-made body styles in `src/app/globals.css`. Your `globals.css` file should contain the only the following:
+Clear out the pre-made styles in `src/app/globals.css`. Your `globals.css` file should contain the only the following:
 
 ```css
 @tailwind base;
@@ -55,11 +55,11 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 }
 ```
 
-Visit localhost:3000/blogs/hello to see the results.
+Visit http://localhost:3000/blogs/hello to see the see the unformatted text. Notice the first line is "hello" becuase of the url path param.
 
 ### About Next.js routing
 
-All pages go inside your src/app/ folder and must have the name `page.tsx` for Next.js to recognize it as a page. Next.js uses file based routing, so if you put a page.tsx file in src/app/hello/world, then that page will be available at localhost:3000/hello/world.
+All pages go inside your `src/app/` folder and must have the name `page.tsx` for Next.js to recognize it as a page. Next.js uses file based routing, so if you put `page.tsx` in `src/app/hello/world`, then that page will be available at http://localhost:3000/hello/world.
 
 ## Create a layout for our blog page
 
@@ -91,8 +91,6 @@ module.exports = {
 Now create a `layout.tsx` file in `src/app/blogs/[slug]`.
 
 ```typescript
-// src/app/blogs/[slug]/layout.tsx
-
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -108,23 +106,13 @@ export default function BlogLayout({ children }: { children: ReactNode }) {
 }
 ```
 
-Your mini blog post should be looking better now.
+Check your browser again, your blog post should be looking much better now.
 
 ## Adding blog posts
 
-Create a `first-blog.mdx` inside the `src/blogs` folder.
+It’s time to start creating some blogs. Create a `blogs` folder in `src/` and create `first-blog.mdx` inside.
 
-Install the `gray-matter` package to parse the frontmatter values from the MDX files.
-
-Create a `get-blogs.ts` file in a utils folder that will contain a function reading all the blogs.
-
-## Adding blog posts
-
-It’s time to start creating some blogs.
-
-Create a blogs folder in src/ and create a first-blog.mdx file inside.
-
-src/blogs/first-blog.mdx:
+`src/blogs/first-blog.mdx`:
 
 ```mdx
 ---
@@ -143,7 +131,7 @@ party!
 
 MDX is just markdown with the ability to import JSX. We don’t have any JSX yet. The section at the top with the title and date is frontmatter metadata. This is a set of key/value pairs that let you define metadata about your markdown file. We will use the title and date when we display a list of all your blog posts.
 
-Next we’re going to create a utility function that scans the blogs folder for all mdx files and parses their content and frontmatter data.
+We’re going to create a utility function that scans the `src/blogs/` folder for all mdx files and parses their content and frontmatter data.
 
 In order to parse the frontmatter values from the mdx files, we need to install the `gray-matter` package.
 
@@ -153,7 +141,7 @@ npm i gray-matter
 
 Then we can create a `get-blogs.ts` file in a utils folder that will contain a function that reads all the blogs.
 
-src/utils/get-blogs.ts:
+`src/utils/get-blogs.ts`:
 
 ```typescript
 import fs from "fs/promises";
@@ -184,7 +172,7 @@ export const getBlogs = async () => {
 };
 ```
 
-The `getBlogs` function is using the async/await versions of the fs file system utilities. It creates and awaits an array of promises, one for each mdx file. Each promise resolves with the parsed data from the MDX file. We are using gray-matter to read the title, date, and content (content is everything below the frontmatter data). Finally we set slug as the name of the file. So if your file is called first-blog.mdx then the slug will be first-blog. We will use this slug to determine the url it is served at.
+The `getBlogs` function is using the async/await versions of the `fs` file system utilities. We create and await an array of promises, one for each mdx file. Each promise resolves with the parsed data from the MDX file. We are using `gray-matter` to read the title, date, and content. Finally we set slug as the name of the file. So if your file is called `first-blog.mdx` then the slug will be `first-blog`. We will use this slug to determine the url it is served at.
 
 `getBlogs` will be used to show a list of all blogs on our site, and also to get the content of any particular blog.
 
@@ -194,9 +182,9 @@ We’re almost there, in order to render the MDX content we will use the `MDXRem
 npm i next-mdx-remote
 ```
 
-Now let’s import `getBlogs` and `MDXRemote` and use the slug of our page to find the right blog from the list of blogs. Let’s also render the blog title in an h1 tag.
+Let's head back to `src/app/blogs/[slug]/page.tsx` and replace it with the following code. We use `getBlogs` and `MDXRemote` to find the right blog for our given URL and render it.
 
-src/app/blogs/[slug]/page.tsx:
+`src/app/blogs/[slug]/page.tsx`:
 
 ```typescript
 import { getBlogs } from "@/utils/get-blogs";
@@ -220,21 +208,21 @@ Since we’re rendering this in a React server component we are importing the rs
 
 #### VSCode typescript quirk
 
-If you see VSCode complaining about `'MDXRemote' cannot be used as a JSX component.`, that means VSCode is not using the version of typescript in your next project. Press F1 and type `Typescript: Select TypeScript Version…`. Click into that and then choose the Workspace version of typescript.
+If you see VSCode complaining about `'MDXRemote' cannot be used as a JSX component.`, that means VSCode is using a version of Typescript that doesn't understand server components. Press F1 and type `Typescript: Select TypeScript Version…`. Click into that and then choose the Workspace version of typescript. This uses Next.js' version of typescript.
 
-Time to see the result of our work! Go to localhost:3000/blogs/first-blog and you should see your first-blog.mdx.
+Time to see the result of our work! Go to http://localhost:3000/blogs/first-blog and you should see your first-blog.mdx.
 
 If you visit another route like /blogs/test you will get a blank page since there are no mdx files named test.mdx in our blogs folder. We will address this next.
 
 ## Making our blog posts statically generated
 
-Our blog site is working at a basic level, but we can make it faster! Right now everytime you visit your blog page or refresh the page, Next.js is rendering your page on the server and sending it to the browser. It’s rendering on the server because it is a React server component which is a good start, but since this blog page only changes when we edit the MDX file, let’s render it once at build time leading to even snappier pages loads when we run the app.
+Our blog site is working at a basic level, but we can make it faster! Right now everytime you visit your blog page Next.js is rendering the page on the server and sending it to the browser. Why are we rendering the blog post on every view if it only changes when we edit the MDX file? Instead let's render it once at build time.
 
-Next.js has built in support to make this easy. If you export an async function from your page.tsx called `generateStaticParams`, then the return value of that function will tell Next.js all the pages to render statically at build time.
+Next.js has built in support to make this easy. If you export an async function called `generateStaticParams` from any `page.tsx` file then the return value of that function will tell Next.js about all the pages to render statically at build time for that page.
 
 We will use our handy `getBlogs` helper again to tell Next about all of our blogs to render.
 
-Add this export in your src/blogs/[slug]/page.tsx:
+Add this export anywhere in `src/blogs/[slug]/page.tsx`:
 
 ```typescript
 export async function generateStaticParams() {
@@ -246,9 +234,9 @@ export async function generateStaticParams() {
 }
 ```
 
-It returns a list of objects with a `slug` property. Each of these objects are passed to your `Blog` component at build time so that Next.js can render an instance of Page for each slug. This won’t change anything in dev mode. When you run npm run dev to start your dev server Next.js won’t statically build any pages.
+It returns a list of objects with a `slug` property. Each of these objects are passed to your `Blog` component at build time so that Next.js can render an instance of the page for each slug. This won’t change anything in dev mode. When you run npm run dev to start your dev server Next.js won’t statically build any pages.
 
-Finally add this following export to `src/app/blogs/[slug]/page.tsx` to tell Next that any page that was not statically built should return a 404 instead of trying to dynamically render:
+Finally add this export anywhere in `src/app/blogs/[slug]/page.tsx` to tell Next.js that any page that was not statically built should return a 404 instead of trying to dynamically render:
 
 ```typescript
 const dynamicParams = false;
@@ -261,9 +249,9 @@ If you curious to see static rendering in action and the renders it saves, add a
 
 Now comment out your `generateStaticParams` function so that it won't run.
 
-Run `npm run build` followed by `npm run start` to create and run a production ready build.
+Run `npm run build` followed by `npm run start` to create and run a production build.
 
-Finally visit your blog at localhost:3000/blog/first-blog and refresh the page a few times. Notice that in your terminal where you ran `npm run start` you’ll see “Blog first-blog is rendering” every time you refresh the page.
+Finally visit your blog at http://localhost:3000/blog/first-blog and refresh the page a few times. Notice that in your terminal where you ran `npm run start` you’ll see “Blog first-blog is rendering” every time you refresh the page.
 
 Now uncomment `generateStaticParams` and save your file. Stop the server and run `npm run build` followed by `npm run start` again. Perform the same refresh test and notice that there are no console logs when you refresh! Your server doesn’t need to render the page on each visit since it was cached at build time.
 
@@ -271,17 +259,9 @@ Now uncomment `generateStaticParams` and save your file. Stop the server and run
 
 To wrap this simple blog site up, let’s make a homepage that renders every blog on the site with a link to it. This will be easy since we already have `getBlogs` to give us the metadata for every post.
 
-Open the src/app/page.tsx file that was created for you at the start. This is the page that’s served at the root of the site “/”. Clear out the file and make a component that just renders an empty main tag
+Open the `src/app/page.tsx` file that was created for you at the start and clear out the file. We will use the `getBlogs` function so that we can render a link for every blog post.
 
-src/app/page.tsx:
-
-```typescript
-export default function Home() {
-  return <main></main>;
-}
-```
-
-Now import the `getBlogs` function so that we can call it inside the component and render a Link for every blog post inside the main tag. We have to make the component async so that we can await the `getBlogs` response. Only server components can be async functions.
+`src/app/page.tsx`:
 
 ```typescript
 import { getBlogs } from "@/utils/get-blogs";
@@ -304,11 +284,13 @@ export default async function Home() {
 
 We are rendering Next.js' `Link`component for each blog post. The href is set to `/blogs/{blog slug name}`.
 
-You can now click the Home button above your blog post to go home and see all your blogs. Clicking your blog title will bring you back to your blog. The home page isn’t pretty looking, but we have a fully functioning blog app now!
+You can now click the "Home" button above your blog post to go home and see all your blogs. Clicking your blog's title will bring you to the blog. The home page isn’t pretty looking yet, but it works!
 
-Let’s add another blog to the blogs folder and style up the home page a bit:
+Add another blog to the `src/blogs` folder, it can be whatever you want.
 
-src/app/page.tsx:
+Now we can style up the home page a bit:
+
+`src/app/page.tsx`:
 
 ```typescript
 import { getBlogs } from "@/utils/get-blogs";
@@ -319,8 +301,8 @@ export default async function Home() {
 
   return (
     <main className="mx-auto mt-10 min-h-screen max-w-xl">
-      <h1 className="mb-10 text-5xl font-bold text-neutral-800">
-        Brandon&apos;s Blog
+      <h1 className="mb-10 bg-gradient-to-r from-cyan-400 to-blue-700 bg-clip-text py-1 text-5xl font-black tracking-tight text-transparent">
+        My Scalable Blog
       </h1>
       <ul className="space-y-4">
         {blogs.map((blog) => (
