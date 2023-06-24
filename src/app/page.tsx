@@ -1,12 +1,16 @@
 import { getBlogs } from "@/lib/get-blogs";
 import { FolderGit2, MessageSquare } from "lucide-react";
+import { Url } from "next/dist/shared/lib/router/router";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 export default function Home() {
   return (
     <div className="mx-auto flex max-w-4xl gap-8">
       <aside className="sticky top-0 max-h-screen w-1/2 py-24">
-        <h1 className="mb-2 text-5xl font-bold text-sky-500">Brandon Kocur</h1>
+        <h1 className="mb-2 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text py-1 text-4xl font-black tracking-tight text-transparent dark:from-cyan-400 dark:to-blue-500 sm:text-5xl">
+          Brandon Kocur
+        </h1>
         <h2 className="mb-10 text-lg font-bold text-neutral-800 dark:text-neutral-200">
           Full Stack Software Engineer
         </h2>
@@ -14,7 +18,7 @@ export default function Home() {
           Passion for UI interfaces, DX tooling, and Open Source.
         </p>
       </aside>
-      <main className="ml-auto flex h-[3000px] w-1/2 flex-col gap-8 py-24">
+      <main className="ml-auto flex w-1/2 flex-col gap-8 py-24">
         <section>
           <div className="flex flex-col px-4">
             <FolderGit2 className="mb-4" />
@@ -23,11 +27,12 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <Project
               title="Portfolio/Blog"
-              description="Open Source Portfolio/Blog template built with Next.js (App Router) and MDX for fast and clean blogging."
+              description="Open Source Portfolio/Blog built with Next.js (App Router) and MDX for fast and clean blogging."
+              link="https://github.com/Brandoko/portfolio-blog"
             />
           </div>
         </section>
-        <BlogsSection />
+        <Blogs />
       </main>
     </div>
   );
@@ -36,19 +41,21 @@ export default function Home() {
 function Project({
   title,
   description,
+  link,
 }: {
   title: string;
   description: string;
+  link: string;
 }) {
   return (
-    <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
+    <ClickableContainer href={link}>
       <h3 className="mb-2 font-bold">{title}</h3>
       <p className="text-neutral-600 dark:text-neutral-300">{description}</p>
-    </div>
+    </ClickableContainer>
   );
 }
 
-async function BlogsSection() {
+async function Blogs() {
   const blogs = await getBlogs();
 
   return (
@@ -82,11 +89,26 @@ function BlogPost({
   date: string;
 }) {
   return (
-    <Link href={`/blogs/${slug}`}>
-      <div className="rounded-lg border border-transparent p-4 shadow-neutral-200 hover:border-neutral-200 hover:bg-neutral-100 hover:shadow-xl dark:hover:border-neutral-600 dark:hover:bg-neutral-800">
-        <h3 className="font-bold">{title}</h3>
-        <p className="text-neutral-600 dark:text-neutral-400">{date}</p>
-      </div>
+    <ClickableContainer href={`/blogs/${slug}`}>
+      <h3 className="mb-2 font-bold">{title}</h3>
+      <p className="text-neutral-600 dark:text-neutral-400">{date}</p>
+    </ClickableContainer>
+  );
+}
+
+function ClickableContainer({
+  children,
+  href,
+}: {
+  children: ReactNode;
+  href: Url;
+}) {
+  return (
+    <Link
+      href={href}
+      className="rounded-lg border border-neutral-200 border-transparent bg-neutral-100 p-4 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+    >
+      {children}
     </Link>
   );
 }
