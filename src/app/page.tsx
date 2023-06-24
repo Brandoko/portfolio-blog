@@ -106,7 +106,7 @@ function ClickableContainer({
   return (
     <Link
       href={href}
-      className="rounded-lg border border-neutral-200 border-transparent bg-neutral-100 p-4 hover:bg-neutral-50 dark:border-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+      className="rounded-lg border border-neutral-200 bg-neutral-100 p-4 hover:border-neutral-300 hover:bg-neutral-200 dark:border-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700"
     >
       {children}
     </Link>
