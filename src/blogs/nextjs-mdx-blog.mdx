@@ -3,15 +3,15 @@ title: Deploy a Blog for Free in 15 Minutes with Next.js App Router
 date: Jun 23, 2023
 ---
 
-## What we’re building
+## What we’re building 🏗️
 
 This quick tutorial will walk you through how to create and deploy a blog website from start to finish. This tutorial assumes you have some light exposure to React and Markdown format, but requires no prior Next.js experience. The blog will be created using Next.js, and deployed through Vercel for a free, fast, and scalable solution. We'll be using MDX to write the blog posts. MDX is a markdown variant that allows you to write JSX code inside your markdown. You can even import custom React components into markdown to support things like interactive widgets in your blog.
 
-## Getting Node if you don’t have it
+## Getting Node if you don’t have it 💻
 
 Next.js runs on Node.js. You need Node 16.8 or later as per the [Next.js docs](https://nextjs.org/docs/getting-started/installation). Install the latest version of Node.js [from the official Node site](https://nodejs.org/en). It is recommended to download the latest LTS release for stability.
 
-## Creating the Next.js app
+## Creating the Next.js app 🧑‍💻
 
 Use the following command to create the Next.js app: `npx create-next-app@latest`
 
@@ -29,7 +29,7 @@ After this short setup you can start your website locally
 - Go into your newly created project `cd <your project name>`
 - Run `npm run dev` and see your site update automatically as you make changes at http://localhost:3000
 
-## Quick cleanup
+## Quick cleanup 🧹
 
 Clear out the pre-made styles in `src/app/globals.css`. Your `globals.css` file should contain the only the following:
 
@@ -39,7 +39,7 @@ Clear out the pre-made styles in `src/app/globals.css`. Your `globals.css` file 
 @tailwind utilities;
 ```
 
-## Creating a Page for rendering your blogs
+## Creating a Page for rendering your blogs 📄
 
 Let’s create a simple React component in `src/app/blogs/[slug]/page.tsx`:
 
@@ -57,11 +57,11 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
 Visit http://localhost:3000/blogs/hello to see the see the unformatted text. Notice the first line is "hello" becuase of the url path param.
 
-### About Next.js routing
+### About Next.js routing 🚏
 
 All pages go inside your `src/app/` folder and must have the name `page.tsx` for Next.js to recognize it as a page. Next.js uses file based routing, so if you put `page.tsx` in `src/app/hello/world`, then that page will be available at http://localhost:3000/hello/world.
 
-## Create a layout for our blog page
+## Create a layout for our blog page 🍱
 
 Our layout will render some HTML tags like main, nav, and article to structure our blog post page.
 
@@ -108,7 +108,7 @@ export default function BlogLayout({ children }: { children: ReactNode }) {
 
 Check your browser again, your blog post should be looking much better now.
 
-## Adding blog posts
+## Adding blog posts 📄
 
 It’s time to start creating some blogs. Create a `blogs` folder in `src/` and create `first-blog.mdx` inside.
 
@@ -120,13 +120,17 @@ title: My First Blog
 date: Jun 18, 2023
 ---
 
-## Step 1
+## Why I'm Building a Blog 👷
 
-Make a Blog
+As a developer, the decision to start a technical blog sprang from my constant desire for knowledge sharing and community building. Software development, in its essence, is not a solitary activity, but a deeply collaborative one. By developing a blog, I found a platform to reflect on my learnings, share tips and tricks, and, in turn, strengthen my understanding of complex concepts. It became my tech playground, a place where I could experiment with new ideas and tools, and express them in my own words.
 
-## Step 2
+### Personal and Community Growth 📈
 
-party!
+Blogging also played a crucial role in my personal growth as a developer. It not only honed my ability to communicate technical ideas clearly but also improved my critical thinking skills. There's something incredibly fulfilling about transforming a nebulous concept into a structured, digestible piece of content. Ultimately, I see my blog as an open-source contribution to the dev community — an attempt to give back, learn, grow, and inspire fellow developers on their journey.
+
+## Thanks for Reading 👋
+
+More blogs coming soon!
 ```
 
 MDX is just markdown with the ability to import JSX. We don’t have any JSX yet. The section at the top with the title and date is frontmatter metadata. This is a set of key/value pairs that let you define metadata about your markdown file. We will use the title and date when we display a list of all your blog posts.
@@ -214,7 +218,7 @@ Time to see the result of our work! Go to http://localhost:3000/blogs/first-blog
 
 If you visit another route like /blogs/test you will get a blank page since there are no mdx files named test.mdx in our blogs folder. We will address this next.
 
-## Making our blog posts statically generated
+## Making our blog posts statically generated 🏎️
 
 Our blog site is working at a basic level, but we can make it faster! Right now everytime you visit your blog page Next.js is rendering the page on the server and sending it to the browser. Why are we rendering the blog post on every view if it only changes when we edit the MDX file? Instead let's render it once at build time.
 
@@ -255,7 +259,7 @@ Finally visit your blog at http://localhost:3000/blog/first-blog and refresh the
 
 Now uncomment `generateStaticParams` and save your file. Stop the server and run `npm run build` followed by `npm run start` again. Perform the same refresh test and notice that there are no console logs when you refresh! Your server doesn’t need to render the page on each visit since it was cached at build time.
 
-## Making a homepage to list all of your blogs
+## Making a homepage to list all of your blogs 📄
 
 To wrap this simple blog site up, let’s make a homepage that renders every blog on the site with a link to it. This will be easy since we already have `getBlogs` to give us the metadata for every post.
 
@@ -326,7 +330,7 @@ export default async function Home() {
 
 Looking better! Try redesigning the page to put your own spin on it.
 
-## Deploying
+## Deploying 🌎
 
 1. Push your blog repo to your GitHub account.
 2. Sign up on the [Vercel dashboard](https://vercel.com/dashboard) and import your blog repo.
