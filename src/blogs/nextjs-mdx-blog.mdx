@@ -206,7 +206,7 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
 Since we’re rendering this in a React server component we are importing the rsc version of `MDXRemote` from `"next-mdx-remote/rsc"`
 
-#### VSCode typescript quirk
+### VSCode typescript quirk
 
 If you see VSCode complaining about `'MDXRemote' cannot be used as a JSX component.`, that means VSCode is using a version of Typescript that doesn't understand server components. Press F1 and type `Typescript: Select TypeScript Version…`. Click into that and then choose the Workspace version of typescript. This uses Next.js' version of typescript.
 
