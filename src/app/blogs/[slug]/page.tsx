@@ -2,6 +2,13 @@ import { getBlogs } from "@/lib/get-blogs";
 import { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
+// @ts-expect-error no types
+import remarkA11yEmoji from "@fec/remark-a11y-emoji";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkToc from "remark-toc";
+import { type Options } from "rehype-pretty-code";
 
 const dynamicParams = false;
 export { dynamicParams };
@@ -36,12 +43,18 @@ export default async function Blog({ params }: { params: { slug: string } }) {
   return (
     <>
       <p>{currentBlog.date}</p>
-      <h1>{currentBlog.title}</h1>
-      <div className="h-1 w-12 bg-blue-400" />
+      <h1 className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text py-1 text-4xl font-black text-transparent sm:text-5xl">
+        {currentBlog.title}
+      </h1>
+      <div className="h-1 w-12 bg-cyan-400" />
       <BlogMDX source={currentBlog.content} />
     </>
   );
 }
+
+const prettyCodeOptions: Partial<Options> = {
+  theme: "one-dark-pro",
+};
 
 function BlogMDX({ source }: { source: string }) {
   return (
@@ -49,7 +62,22 @@ function BlogMDX({ source }: { source: string }) {
       source={source}
       options={{
         mdxOptions: {
-          remarkPlugins: [remarkGfm],
+          remarkPlugins: [
+            remarkGfm,
+            remarkA11yEmoji,
+            [
+              remarkToc,
+              {
+                tight: true,
+                maxDepth: 5,
+              },
+            ],
+          ],
+          rehypePlugins: [
+            rehypeSlug,
+            rehypeAutolinkHeadings,
+            [rehypePrettyCode, prettyCodeOptions],
+          ],
         },
       }}
     />
