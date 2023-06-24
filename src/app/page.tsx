@@ -8,11 +8,14 @@ export default function Home() {
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-8 px-6 sm:flex-row">
       <aside className="top-0 max-h-screen py-10 sm:sticky sm:w-1/2 sm:py-24">
+        <div className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
+          👋 😎 I&apos;m
+        </div>
         <h1 className="mb-2 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text py-1 text-4xl font-black tracking-tight text-transparent dark:from-cyan-400 dark:to-blue-500 sm:text-5xl">
           Brandon Kocur
         </h1>
         <h2 className="mb-4 text-lg font-bold text-neutral-800 dark:text-neutral-200 sm:mb-10">
-          Full Stack Software Engineer
+          A Full Stack Software Engineer
         </h2>
         <p className="text-neutral-600 dark:text-neutral-300">
           Passion for UI interfaces, DX tooling, and Open Source.
