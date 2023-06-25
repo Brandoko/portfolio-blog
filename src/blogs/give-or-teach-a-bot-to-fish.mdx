@@ -5,19 +5,19 @@ date: Jun 25, 2023
 
 ## What do Fish have to do with models like GPT-4? 🤖 + 🐠 = ✨
 
-The phrases "Give a Bot a Fish" and "Teach a Bot to Fish" come from an excelent [prompt engineering guide](https://github.com/brexhq/prompt-engineering#give-a-bot-a-fish) from Brex.
+The phrases "Give a Bot a Fish" and "Teach a Bot to Fish" come from an excellent [prompt engineering guide](https://github.com/brexhq/prompt-engineering#give-a-bot-a-fish) from Brex.
 
 These phrases are ways of describing how Large Language Models (LLMs) can understand and interact with the outside world.
 
 ## Give a Bot a Fish 🐠
 
-This process is the simpler of the two and is fairly easy to implement yourself. When we give a bot a fish, it means we are providing the model with everything it needs to succeed in its given task.
+This strategy is the less complex of the two and can be implemented quite easily on your own. When we give a bot a fish, it means we are providing the model with everything it needs to succeed in its given task.
 
-Let's run a simple example in Python
+Now, let's explore this concept with a simple Python example.
 
 TODO: add dropdown with project setup info
 
-I use poetry to simply the creation and dependency management of my python projects.
+I use poetry to simplify the creation and dependency management of my python projects.
 
 1. Install poetry https://python-poetry.org/docs/
 2. Create a new poetry project `poetry new gpt-fish`
@@ -36,7 +36,7 @@ import os
 load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Define a sytem prompt that gives the assistant its purpose and context.
+# Define a system prompt that gives the assistant its purpose and context.
 system_prompt = """You are a bubbly assistant that helps a user plan their day.
 
 Today is Sun Jun 25 2023. This is the user's list of things that need to be done today.
@@ -102,13 +102,13 @@ The app would work like this:
 
 Want to try it? LangChain has a [Wikipedia integration](https://python.langchain.com/docs/modules/data_connection/document_loaders/integrations/wikipedia) that makes executing this example easy.
 
-#### Text Emebddings
+#### Text Embeddings
 
 Another popular approach in the "Give a Fish" strategy is to store text embedding vectors in a vector database made from your data.
 
 A text embedding model turns text into a vector that represents the semantics of the text.
 
-You can embed the user's question with the emebdding model and query the vector database for the most relevant source material. This method's popularity stems from the fact that a user's question may not have a lot of lexical overlap with the actual answers in your dataset, so a typical term search would fail to grab relevant entries.
+You can embed the user's question with the embedding model and query the vector database for the most relevant source material. This method's popularity stems from the fact that a user's question may not have a lot of lexical overlap with the actual answers in your dataset, so a typical term search would fail to grab relevant entries.
 
 Once the vector database gets the most relevant source material about your user's question, you simply stuff the context in the prompt like we did with the user's schedule.
 
@@ -117,39 +117,36 @@ Once the vector database gets the most relevant source material about your user'
 Giving a bot a fish can be great, but the solutions it solves are very static. You have to setup a very rigid system that:
 
 1. Takes a task as input text
-2. Finds some meanful content for the given task and stuffs it into the prompt
+2. Finds some meaningful content for the given task and stuffs it into the prompt
 3. Outputs some text
 
 Step 2 is usually a very specific process like semantic search, or including information based on which user is asking.
 
-Instead of being limited to what we code for step 2, what if we could **teach** the bot to interact with the world around it? This would create a much higher leverage system where the bot can do anything within the relm of what it has access to.
+Instead of being limited to what we code for step 2, what if we could **teach** the bot to interact with the world around it? This would create a much higher leverage system where the bot can do anything within the realm of what it has access to.
 
 Let's say I teach the bot how to use a Google search API, interact with python REPL, and send emails via API.
 
 Just by teaching it these 3 skills, the bot can now do all kinds of things. Examples:
 
-- User: "find the latest news on Apple's keynote and send me an email with the highlights"
-  - The bot will search Google for somthing like "Apple's keynote" and observe the information
-  - The bot will summarize the information and send it as an email body
-- User: "What's the world record for the highest jump raised to the power of 0.65?"
-  - The bot will search Google for somthing like "world record for the highest jump" and observe the answer
-  - The bot will use the math utils in python to raise the answer to 0.65
 - User: "find the customer support email address for Apple and send them an email asking how to take a screenshot"
-  - The bot will search Google for somthing like "customer support email address for Apple" and observe the answer
+  - The bot will search Google for something like "customer support email address for Apple" and observe the answer
   - The bot will send Apple an email for you
+- User: "What's the world record for the highest jump raised to the power of 0.65?"
+  - The bot will search Google for something like "world record for the highest jump" and observe the answer
+  - The bot will use the math utils in python to raise the answer to 0.65
 
 We could think of many more unique combinations of the skills. The point here is that by teaching the bot how to interact with the world, you create a high-leverage system that can now do exponentially more tasks without you ever even coding specific features.
 
 ### Teaching a Bot to Fish in LangChain
 
-LangChain has done the grunt work of setting up the prompts and interfaces for providing a LLM a set of tools and getting it to enter an action-observation loop by using the tools to acomplish a goal. Let's try it out.
+LangChain has done the grunt work of setting up the prompts and interfaces for providing a LLM a set of tools and getting it to enter an action-observation loop by using the tools to accomplish a goal. Let's try it out.
 
 TODO: dropdown to show setup info
 
 These instructions assume you followed the setup from the first section
 
 1. Add langchain to our project `poetry add langchain`
-2. This example requires setting up the Gmail toolkit which is a little invloved. [See LangChain's instructions here](https://python.langchain.com/docs/modules/agents/toolkits/gmail)
+2. This example requires setting up the Gmail toolkit which is a little involved. [See LangChain's instructions here](https://python.langchain.com/docs/modules/agents/toolkits/gmail)
 3. Add the SerpAPI client `poetry add google-search-results`
 4. Create a new file for our example: `touch gpt_fish/teach-a-bot-to-fish.py`
 5. Obtain an API key from SerpAPI (a search API) and add it to your .env file `SERPAPI_API_KEY=<your serpai key>`
