@@ -23,7 +23,7 @@ export default function RootLayout({
           "bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100"
         )}
       >
-        <div className="absolute inset-x-0 top-0 -z-50 h-[1000px] overflow-hidden">
+        <div className="absolute inset-x-0 -z-50 h-[1000px] overflow-hidden">
           <div className="blob-1 absolute -right-24 h-48 w-48 opacity-80 md:h-96 md:w-96" />
         </div>
 

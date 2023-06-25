@@ -7,7 +7,7 @@ import { HTMLAttributeAnchorTarget, ReactNode } from "react";
 
 export default function Home() {
   return (
-    <div className="mx-auto my-12 max-w-4xl px-6">
+    <div className="mx-auto max-w-4xl px-6 py-12">
       <Navbar />
       <main className="flex flex-col gap-8 sm:flex-row">
         <section className="top-0 max-h-screen sm:sticky sm:w-1/2">
