@@ -1,18 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
-import Link from "next/link";
+import Navbar from "@/components/navbar";
 import { ReactNode } from "react";
 
 export default function BlogLayout({ children }: { children: ReactNode }) {
   return (
     <main className="mx-auto my-12 max-w-3xl px-2">
-      <nav className="mb-10 flex space-x-6">
-        <Button variant="link" asChild className="pl-0">
-          <Link href={"/"}>
-            <Home className="mr-2 h-4 w-4" /> Home
-          </Link>
-        </Button>
-      </nav>
+      <Navbar />
       <article className="prose prose-slate mb-12 max-w-none dark:prose-invert">
         {children}
       </article>
