@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import Link from "next/link";
-import ThemeToggle from "./theme-toggle";
+import { ThemeSelector } from "./theme-selector";
 
 export default function Navbar() {
   return (
@@ -11,7 +11,7 @@ export default function Navbar() {
           <Home className="mr-2 h-4 w-4" /> Home
         </Link>
       </Button>
-      <ThemeToggle />
+      <ThemeSelector />
     </nav>
   );
 }
