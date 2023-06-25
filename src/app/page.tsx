@@ -18,7 +18,7 @@ export default function Home() {
           A Full Stack Software Engineer
         </h2>
         <p className="text-neutral-600 dark:text-neutral-300">
-          Passion for UI interfaces, DX tooling, and Open Source.
+          Passion for UI interfaces, DX tooling, AI frameworks, and Open Source.
         </p>
       </aside>
       <main className="ml-auto flex flex-col gap-8 pb-10 sm:w-1/2 sm:py-24">
