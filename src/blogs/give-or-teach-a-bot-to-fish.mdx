@@ -3,9 +3,9 @@ title: "Teach a Bot to Fish or Give a Bot a Fish? Integrate ChatGPT the Right Wa
 date: Jun 25, 2023
 ---
 
-## What do Fish have to do with models like GPT-4? 🤖 + 🐠 = ✨
+## What Do Fish Have to Do with Models Like GPT-4? 🤖 + 🐠 = ✨
 
-The phrases "Give a Bot a Fish" and "Teach a Bot to Fish" come from an excellent [prompt engineering guide](https://github.com/brexhq/prompt-engineering#give-a-bot-a-fish) from Brex.
+The phrases "Give a Bot a Fish" and "Teach a Bot to Fish" come from an excellent [prompt engineering guide](https://github.com/brexhq/prompt-engineering) from Brex.
 
 These phrases are ways of describing how Large Language Models (LLMs) can understand and interact with the outside world.
 
@@ -69,7 +69,7 @@ chat_completion = openai.ChatCompletion.create(
 print(chat_completion.choices[0].message.content)
 ```
 
-Run the example
+### Run the example
 
 ```
 poetry run python gpt_fish/give-a-bot-a-fish-simple.py
@@ -89,7 +89,7 @@ Sure, here's the order you could do your activities in:
 This way, you can get the smaller and more annoying tasks out of the way early on and save the more enjoyable activities for later.
 ```
 
-A pretty good result! This example demonstrates giving the bot a fish, where the "fish" in this example is the user's schedule today. Without this data the assistant would have no idea what the user's activities are.
+Pretty good! Without this data (the "fish") the assistant would have no idea what the user's activities are.
 
 ### "Give a Fish" Use Cases 💭
 
@@ -116,7 +116,7 @@ You can embed the user's question with the embedding model and query the vector 
 
 Once the vector database gets the most relevant source material about your user's question, you simply stuff the context in the prompt like we did with the user's schedule.
 
-## Teach a Bot to Fish 🎣
+### "Give a Fish" Limitations
 
 Giving a bot a fish can be great, but the solutions it solves are very static. You have to setup a very rigid system that:
 
@@ -127,6 +127,8 @@ Giving a bot a fish can be great, but the solutions it solves are very static. Y
 Step 2 is usually a very specific process like semantic search, or including information based on which user is asking.
 
 Instead of being limited to what we code for step 2, what if we could **teach** the bot to interact with the world around it? This would create a much higher leverage system where the bot can do anything within the realm of what it has access to.
+
+## Teach a Bot to Fish 🎣
 
 Let's say I teach the bot how to use a Google search API, interact with python REPL, and send emails via API.
 
@@ -139,7 +141,7 @@ Just by teaching it these 3 skills, the bot can now do all kinds of things. Exam
   - The bot will search Google for something like "world record for the highest jump" and observe the answer
   - The bot will use the math utils in python to raise the answer to 0.65
 
-We could think of many more unique combinations of the skills. The point here is that by teaching the bot how to interact with the world, you create a high-leverage system that can now do exponentially more tasks without you ever even coding specific features.
+The point here is that by teaching the bot how to interact with the world, you create a high-leverage system that can now do exponentially more tasks without you needing to code specific features.
 
 ### Teaching a Bot to Fish in LangChain 🦜 🔗
 
