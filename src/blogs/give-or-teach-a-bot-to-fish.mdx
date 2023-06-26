@@ -1,5 +1,5 @@
 ---
-title: "ChatGPT: Should You Teach a Bot to Fish or Give a Bot a Fish?"
+title: "Teach a Bot to Fish or Give a Bot a Fish? Integrate ChatGPT the Right Way."
 date: Jun 25, 2023
 ---
 
@@ -9,13 +9,13 @@ The phrases "Give a Bot a Fish" and "Teach a Bot to Fish" come from an excellent
 
 These phrases are ways of describing how Large Language Models (LLMs) can understand and interact with the outside world.
 
+The source code from the examples in this post can be found [here](https://github.com/Brandoko/gpt-fish)
+
 ## Give a Bot a Fish 🐠
 
 This strategy is the less complex of the two and can be implemented quite easily on your own. When we give a bot a fish, it means we are providing the model with everything it needs to succeed in its given task.
 
 Now, let's explore this concept with a simple Python example.
-
-TODO: add dropdown with project setup info
 
 I use poetry to simplify the creation and dependency management of my python projects.
 
@@ -141,8 +141,6 @@ We could think of many more unique combinations of the skills. The point here is
 
 LangChain has done the grunt work of setting up the prompts and interfaces for providing a LLM a set of tools and getting it to enter an action-observation loop by using the tools to accomplish a goal. Let's try it out.
 
-TODO: dropdown to show setup info
-
 These instructions assume you followed the setup from the first section
 
 1. Add langchain to our project `poetry add langchain`
@@ -234,5 +232,9 @@ Action:
   width={800}
   height={200}
 />
+
+## GPT-3.5 vs GPT-4
+
+All examples in this blog used gpt-3.5-turbo. It should be noted that as you build sufficiently advanced agents with the "Teach a Bot to Fish" method, you may notice gpt-3.5-turbo start to struggle. For the most part, gpt-3.5-turbo works just as well as gpt-4 for the "Give a Bot a Fish" use cases. Given the vast pricing differences between these models, this may be an important consideration.
 
 Thanks for reading, and remember to use AI responsibly. 😎 🤝 🤖
