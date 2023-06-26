@@ -10,6 +10,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import remarkToc from "remark-toc";
 import { type Options } from "rehype-pretty-code";
 import MDXImage from "@/components/mdx-image";
+import MDXAccordion from "@/components/mdx-accordion";
 
 const dynamicParams = false;
 export { dynamicParams };
@@ -60,7 +61,7 @@ const prettyCodeOptions: Partial<Options> = {
   keepBackground: true,
 };
 
-const components = { Image: MDXImage };
+const components = { Image: MDXImage, Accordion: MDXAccordion };
 
 function BlogMDX({ source }: { source: string }) {
   return (

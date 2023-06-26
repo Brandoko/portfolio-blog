@@ -17,6 +17,8 @@ This strategy is the less complex of the two and can be implemented quite easily
 
 Now, let's explore this concept with a simple Python example.
 
+<Accordion label="Show local setup instructions">
+
 I use poetry to simplify the creation and dependency management of my python projects.
 
 1. Install poetry https://python-poetry.org/docs/
@@ -26,6 +28,8 @@ I use poetry to simplify the creation and dependency management of my python pro
 5. Install python-dotenv to read our OpenAI API key from an .env file: `poetry add python-dotenv`
 6. Create a new file for our example: `touch gpt_fish/give-a-bot-a-fish-simple.py`
 7. Create a .env file with `OPENAI_API_KEY=<your openai api key here>`
+
+</Accordion>
 
 ```python
 import openai
@@ -139,7 +143,11 @@ We could think of many more unique combinations of the skills. The point here is
 
 ### Teaching a Bot to Fish in LangChain 🦜 🔗
 
-LangChain has done the grunt work of setting up the prompts and interfaces for providing a LLM a set of tools and getting it to enter an action-observation loop by using the tools to accomplish a goal. Let's try it out.
+LangChain has done the grunt work of setting up the prompts and interfaces for providing a LLM a set of tools and getting it to enter an action-observation loop by using the tools to accomplish a goal.
+
+Let's try it out by creating a bot that can fulfill this task _"lookup the runtime of avatar 2. Convert that to number to seconds and send the result to kocurbrandon@gmail.com"_.
+
+<Accordion label="Show local setup instructions">
 
 These instructions assume you followed the setup from the first section
 
@@ -148,6 +156,8 @@ These instructions assume you followed the setup from the first section
 3. Add the SerpAPI client `poetry add google-search-results`
 4. Create a new file for our example: `touch gpt_fish/teach-a-bot-to-fish.py`
 5. Obtain an API key from SerpAPI (a search API) and add it to your .env file `SERPAPI_API_KEY=<your serpai key>`
+
+</Accordion>
 
 ```python
 from langchain.llms import OpenAI
@@ -174,7 +184,11 @@ agent.run(
 )
 ```
 
-Run the bot. **WARNING** This bot can send emails on your behalf, be careful what you ask it to do 😰
+This code sets up an agent that uses an OpenAI model (gpt-3.5-turbo by default) to analyze a task given a set of tools. I'm using tools that are built-in to LangChain, but you can define custom tools to let the bot interact with anything you'd like. I have provided a collection of Gmail tools, a math tool (it executes math using python REPL), and a SerpAPI tool that allows it to search the internet.
+
+### Running the Bot
+
+_WARNING_: This bot can send emails on your behalf, be careful what you ask it to do. 😬
 
 ```
 poetry run python gpt_fish/teach-a-bot-to-fish.py
@@ -232,6 +246,8 @@ Action:
   width={800}
   height={200}
 />
+
+The agent was able to fully understand my request, and orchestrate all of the tools at its disposal to send me that email.
 
 ## GPT-3.5 vs GPT-4
 
