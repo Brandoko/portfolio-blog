@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import { getBlogs } from "@/lib/get-blogs";
 import { FolderGit2, MessageSquare } from "lucide-react";
 import { Url } from "next/dist/shared/lib/router/router";
+import Image from "next/image";
 import Link from "next/link";
 import { HTMLAttributeAnchorTarget, ReactNode } from "react";
 
@@ -9,15 +10,13 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <Navbar />
-      <main className="flex flex-col gap-8 sm:flex-row">
-        <section className="top-0 max-h-screen sm:sticky sm:w-1/2">
-          <div className="text-lg font-bold text-neutral-800 dark:text-neutral-200">
+      <main className="flex flex-col gap-10 sm:flex-row">
+        <section className="top-0 max-h-screen sm:sticky md:w-1/2">
+          <div className="mb-4 text-lg font-bold text-neutral-800 dark:text-neutral-200">
             👋 😎 I&apos;m
           </div>
-          <h1 className="mb-2 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text py-1 text-4xl font-black tracking-tight text-transparent dark:from-cyan-400 dark:to-blue-500 sm:text-5xl">
-            Brandon Kocur
-          </h1>
-          <h2 className="mb-4 text-lg font-bold text-neutral-800 dark:text-neutral-200 sm:mb-10">
+          <ProfilePictureCard />
+          <h2 className="mb-4 mt-8 text-lg font-bold text-neutral-800 dark:text-neutral-200">
             A Full Stack Software Engineer
           </h2>
           <p className="text-neutral-600 dark:text-neutral-300">
@@ -25,7 +24,7 @@ export default function Home() {
             building a faster web, and Open Source.
           </p>
         </section>
-        <div className="ml-auto flex flex-col gap-8 sm:w-1/2">
+        <div className="ml-auto flex flex-col gap-8 md:w-1/2">
           <Projects />
           <Blogs />
         </div>
@@ -132,5 +131,32 @@ function ClickableContainer({
     >
       {children}
     </Link>
+  );
+}
+
+function ProfilePictureCard() {
+  return (
+    <div className="relative overflow-hidden rounded-3xl">
+      <Image
+        src="/bg.png"
+        alt="background pattern"
+        width={900}
+        height={400}
+        className="h-48 w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900" />
+      <div className="absolute inset-4 flex items-center justify-between">
+        <h1 className="ml-4 text-4xl font-black tracking-tight text-white md:text-5xl">
+          Brandon Kocur
+        </h1>
+        <Image
+          src="/pfp.jpg"
+          alt="background pattern"
+          width={400}
+          height={400}
+          className="h-16 w-16 rounded-full border-2 border-slate-50 object-cover md:h-24 md:w-24"
+        />
+      </div>
+    </div>
   );
 }
