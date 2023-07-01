@@ -2,7 +2,15 @@ import fs from "fs/promises";
 import path from "path";
 import matter from "gray-matter";
 
-export const getBlogs = async () => {
+type BlogData = {
+  title: string;
+  date: string;
+  image?: string;
+  content: string;
+  slug: string;
+};
+
+export async function getBlogs(): Promise<BlogData[]> {
   const blogsDir = "src/blogs";
   const files = await fs.readdir(blogsDir);
 
@@ -18,9 +26,10 @@ export const getBlogs = async () => {
         return {
           title: fontmatter.data.title,
           date: fontmatter.data.date,
+          image: fontmatter.data.image,
           content: fontmatter.content,
           slug: blogSlug,
         };
       })
   );
-};
+}
