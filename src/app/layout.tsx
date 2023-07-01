@@ -6,8 +6,31 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Blog",
-  description: "Brandon's Blog",
+  title: {
+    template: "%s | Brandon Kocur",
+    default: "Brandon Kocur",
+  },
+  description: "Full-stack developer.",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f5f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#000" },
+  ],
+  openGraph: {
+    title: "Brandon Kocur",
+    description: "Full-stack developer.",
+    url: "https://brandonkocur.dev",
+    siteName: "Brandon Kocur's site",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    title: "Brandon Kocur",
+    card: "summary_large_image",
+    creator: "@brandon_kocur",
+  },
+  icons: {
+    shortcut: "https://brandonkocur.dev/favicon.ico",
+  },
 };
 
 export default function RootLayout({
