@@ -11,6 +11,7 @@ import remarkToc from "remark-toc";
 import { type Options } from "rehype-pretty-code";
 import MDXImage from "@/components/mdx-image";
 import MDXAccordion from "@/components/mdx-accordion";
+import Image from "next/image";
 
 const dynamicParams = false;
 export { dynamicParams };
@@ -45,6 +46,15 @@ export default async function Blog({ params }: { params: { slug: string } }) {
 
   return (
     <>
+      {currentBlog.image && (
+        <Image
+          src={currentBlog.image}
+          alt="blog image"
+          width={800}
+          height={400}
+          className="h-64 rounded-3xl object-cover"
+        />
+      )}
       <p>{currentBlog.date}</p>
       <div className="not-prose">
         <h1 className="mb-8 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text py-1 text-3xl font-black text-transparent dark:from-cyan-400 dark:to-blue-500 sm:text-4xl md:text-5xl">
