@@ -5,7 +5,7 @@ import matter from "gray-matter";
 type BlogData = {
   title: string;
   date: string;
-  image?: string;
+  image: string;
   content: string;
   slug: string;
 };
