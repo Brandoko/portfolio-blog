@@ -142,6 +142,7 @@ function ProfilePictureCard() {
         alt="background pattern"
         width={900}
         height={400}
+        priority
         className="h-48 w-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-blue-900" />
@@ -151,7 +152,7 @@ function ProfilePictureCard() {
         </h1>
         <Image
           src="/pfp.jpg"
-          alt="background pattern"
+          alt="profile picture"
           width={400}
           height={400}
           priority
