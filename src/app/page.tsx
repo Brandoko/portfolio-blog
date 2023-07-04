@@ -154,6 +154,7 @@ function ProfilePictureCard() {
           alt="background pattern"
           width={400}
           height={400}
+          priority
           className="h-16 w-16 rounded-full border-2 border-slate-50 object-cover md:h-24 md:w-24"
         />
       </div>
