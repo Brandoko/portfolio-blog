@@ -20,8 +20,8 @@ export default function Home() {
             A Full Stack Software Engineer
           </h2>
           <p className="text-neutral-600 dark:text-neutral-300">
-            I have a passion for UI interfaces, DX tooling, AI frameworks,
-            building a faster web, and Open Source.
+            I like UI/UX, DX tooling, AI frameworks, and learning/blogging about
+            interesting stuff.
           </p>
         </section>
         <div className="ml-auto flex flex-col gap-8 md:w-1/2">
