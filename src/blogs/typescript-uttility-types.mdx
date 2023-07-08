@@ -1,0 +1,127 @@
+---
+title: "TypeScript Utility Types: The Essentials for Frontend Developers"
+date: Jul 6, 2023
+image: /typescript.png
+---
+
+In large TypeScript projects you will almost always see a steady increase in both the number of types and type complexity as the project requirements evolve. Understanding TypeScript’s built-in Utility types can save you time and reduce code.
+
+## What are TypeScript Utility Types?
+
+Utility Types in TypeScript provide a set of type modifiers that create new types by manipulating the definition of an existing type.
+
+## Commonly Used Utility Types
+
+### Partial
+
+`Partial<Type>` is a utility that makes all properties of a type optional. It's useful when working with object structures with many optional properties.
+
+Without Partial, if you have a type that does not guarantee any of the fields to be present, you would have to mark every field with a `?` to indicate that it may be undefined:
+
+```typescript
+type Profile = {
+  name?: string;
+  email?: string;
+  age?: number;
+};
+```
+
+Instead, wrap it in a `Partial` to achieve the same effect:
+
+```typescript
+type Profile = Partial<{
+  name: string;
+  email: string;
+  age: number;
+}>;
+```
+
+As with all the type utilities, you don’t need to wrap your type with the Utility where you define the type. If you only expect the fields of `Profile` to be missing in one place then you can wrap the type in `Partial` where you use it:
+
+```typescript
+function editProfileName(profile: Partial<Profile>, newName: string) {
+  // All fields of `profile` are potentially undefined here
+}
+```
+
+### Required
+
+`Required<Type>` is the opposite of Partial. Suppose all your fields on a type are optional, but in one function you need to guarantee that the returned object has all properties defined. In this case you could set your return type as `Required<Profile>`:
+
+```typescript
+function editProfileName(
+  profile: Partial<Profile>,
+  newName: string
+): Required<Profile> {
+  // Must return a `Profile` with all fields defined
+}
+```
+
+Using strict return types like this is like a free unit test that verifies the output of your function!
+
+### Readonly
+
+`Readonly<Type>` creates a type where all properties are set to readonly. This is useful when you want to make sure that a function does not mutate its input.
+
+```typescript
+interface Profile {
+  name: string;
+  age: number;
+}
+
+function cloneProfile(profile: Readonly<Profile>) => {
+  //...
+};
+```
+
+In the above example, the cloneProfile function won't be able to mutate the profile object. Note, the [no-param-reassign](https://eslint.org/docs/latest/rules/no-param-reassign) ESLint rule may be more effective for this specific use case. The `Readonly` util can be helpful when working with JavaScript’s [`Object.freeze()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
+
+### Pick
+
+`Pick<Type, Keys>` allows us to create a new type by selecting properties from an existing type. This utility is useful when we want to create a new type based on a subset of an existing type's properties.
+
+```typescript
+interface Profile {
+  name: string;
+  age: number;
+  address: string;
+}
+
+type BasicProfile = Pick<Profile, "name" | "age">;
+```
+
+### Omit
+
+`Omit<Type, Keys>` allows us to create a new type by removing specific properties from an existing type. It's like the opposite of Pick.
+
+```typescript
+interface Profile {
+  name: string;
+  age: number;
+  address: string;
+}
+
+type ProfileWithoutAddress = Omit<Profile, "address">;
+```
+
+### Record
+
+`Record<Keys,Type>` creates a new type with specified properties and their values. It's useful when you need to map the properties of one type to another. This Utility is one of the more powerful and useful ones as it can help you define complex JSON objects.
+
+```typescript
+type ThemeStyles = Record<"dark" | "light", string>;
+```
+
+In the above example, ThemeStyles is a type that will have the properties 'dark' and 'light' with their values as strings.
+
+You should also use `Record` instead of `{}` to define an empty object to TypeScript:
+
+```typescript
+type EmptyObject = Record<string, never>;
+```
+
+## Conclusion
+
+TypeScript Utility Types are an incredibly powerful feature that can make our TypeScript code more flexible and robust. By understanding and using these utility types, we can create more accurate type definitions and write more maintainable and bug-free code.
+
+Remember, the key to mastering TypeScript is practice. So don't hesitate to experiment with these Utility Types in your own projects!
